@@ -12,6 +12,9 @@ receivers:
     collection_interval: 20s
 
 processors:
+  memorylimiter:
+    limit_mib: 100
+    check_interval: 5s
   batch/traces: # X-Ray
     timeout: 1s
     send_batch_size: 50

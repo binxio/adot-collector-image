@@ -6,10 +6,16 @@ Description: |
   ECR repository stack to host the custom adot-collector images.
 
 Resources:
-  Repository:
+  AMPXRayRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: !Ref repositoryName
+      RepositoryName: amp-xray-adot-collector
+      ImageScanningConfiguration:
+        ScanOnPush: "true"
+  AMPXRayPromRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: amp-xray-prom-adot-collector
       ImageScanningConfiguration:
         ScanOnPush: "true"
 

@@ -1,0 +1,63 @@
+extensions:
+  health_check:
+
+receivers:
+  otlp: # X-Ray
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  awsecscontainermetrics: # ECS
+    collection_interval: 20s
+
+processors:
+  batch/traces: # X-Ray
+    timeout: 1s
+    send_batch_size: 50
+  batch/metrics: # ECS
+    timeout: 60s
+  resourcedetection: # ECS, StatsD, etc
+    detectors:
+      - env
+      - system
+      - ecs
+      - ec2
+  filter:
+    metrics:
+      include:
+        match_type: strict
+        metric_names:
+          - ecs.task.memory.reserved
+          - ecs.task.memory.utilized
+          - ecs.task.cpu.reserved
+          - ecs.task.cpu.utilized
+          - ecs.task.network.rate.rx
+          - ecs.task.network.rate.tx
+          - ecs.task.storage.read_bytes
+          - ecs.task.storage.write_bytes
+          - container.duration
+
+exporters:
+  awsxray:
+  awsprometheusremotewrite:
+    endpoint: $AMP_RW_NDPOINT
+  resource_to_telemetry_conversion:
+    enabled: true
+
+service:
+  pipelines:
+    traces: # X-Ray
+      receivers: [otlp]
+      processors: [resourcedetection, batch/traces]
+      exporters: [awsxray]
+    metrics/application: # Prometheus scrape
+      receivers: [otlp]
+      processors: [resourcedetection, batch/metrics]
+      exporters: [awsprometheusremotewrite]
+    metrics: # ECS
+      receivers: [awsecscontainermetrics]
+      processors: [filter]
+      exporters: [awsprometheusremotewrite]
+
+  extensions: [health_check]

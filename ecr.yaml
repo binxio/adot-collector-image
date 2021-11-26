@@ -3,7 +3,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Description: |
-  Elastic Container Registry for the adot-collector-image.
+  ECR repository stack to host the custom adot-collector images.
 
 Resources:
   Repository:

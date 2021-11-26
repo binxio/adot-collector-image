@@ -20,5 +20,7 @@ Resources:
         ScanOnPush: "true"
 
 Outputs:
-  Arn:
-    Value: !GetAtt Repository.Arn
+  AMPXRayRepositoryArn:
+    Value: !GetAtt AMPXRayRepository.Arn
+  AMPXRayPromRepository:
+    Value: !GetAtt AMPXRayPromRepository.Arn

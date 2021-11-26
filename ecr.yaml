@@ -1,0 +1,18 @@
+---
+# yamllint disable rule:line-length
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: |
+  Elastic Container Registry for the adot-collector-image.
+
+Resources:
+  Repository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Ref repositoryName
+      ImageScanningConfiguration:
+        ScanOnPush: "true"
+
+Outputs:
+  Arn:
+    Value: !GetAtt Repository.Arn

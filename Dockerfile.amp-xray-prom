@@ -1,3 +1,3 @@
-FROM public.ecr.aws/aws-observability/aws-otel-collector:latest
+FROM public.ecr.aws/aws-observability/aws-otel-collector:v0.15.0
 COPY ecs-amp-xray-prom-config.yaml /etc/ecs/ecs-amp-xray-prom-config.yaml
 CMD ["--config=/etc/ecs/ecs-amp-xray-prom-config.yaml"]

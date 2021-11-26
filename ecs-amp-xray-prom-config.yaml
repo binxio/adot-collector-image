@@ -8,7 +8,7 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
-  prometheus: # Prometheus scrape
+  prometheus: # custom Prometheus scrape
     config:
       global:
         scrape_interval: 15s
@@ -29,7 +29,7 @@ processors:
     send_batch_size: 50
   batch/metrics: # ECS
     timeout: 60s
-  resourcedetection: # ECS, StatsD, etc
+  resourcedetection:
     detectors:
       - env
       - system
@@ -53,7 +53,7 @@ processors:
 exporters:
   awsxray:
   awsprometheusremotewrite:
-    endpoint: $AMP_RW_NDPOINT
+    endpoint: $AWS_PROMETHEUS_ENDPOINT
   resource_to_telemetry_conversion:
     enabled: true
 
@@ -63,7 +63,7 @@ service:
       receivers: [otlp]
       processors: [resourcedetection, batch/traces]
       exporters: [awsxray]
-    metrics/application: # Prometheus scrape
+    metrics/application:
       receivers: [otlp]
       processors: [resourcedetection, batch/metrics]
       exporters: [awsprometheusremotewrite]

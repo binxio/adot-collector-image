@@ -9,13 +9,13 @@ Resources:
   AMPXRayRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: ecs-otel-amp-xray-collector
+      RepositoryName: ecs-amp-xray-collector
       ImageScanningConfiguration:
         ScanOnPush: "true"
   AMPXRayPromRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: ecs-otel-amp-xray-prom-collector
+      RepositoryName: ecs-amp-xray-prom-collector
       ImageScanningConfiguration:
         ScanOnPush: "true"
 

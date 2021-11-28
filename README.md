@@ -21,11 +21,11 @@ To deploy the custom AWS OTel Collector images to their respective ECR image rep
 ```sh
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 123456789101.dkr.ecr.us-east-1.amazonaws.com
 
-docker build -t ecs-otel-amp-xray-collector:latest -f Dockerfile.amp-xray
+docker build -t ecs-amp-xray-collector:latest -f Dockerfile.ecs-amp-xray
 
-docker tag ecs-otel-amp-xray-collector:latest 123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-otel-amp-xray-collector:latest
+docker tag ecs-amp-xray-collector:latest 123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-amp-xray-collector:latest
 
-docker push 123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-otel-amp-xray-collector:latest
+docker push 123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-amp-xray-collector:latest
 ```
 
 ## usage
@@ -61,8 +61,8 @@ After adding the sidecar, the container definition should look as following:
           }
       },
       {
-          "name": "ecs-otel-amp-xray-collector",
-          "image": "123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-otel-amp-xray-collector:latest",
+          "name": "ecs-amp-xray-collector",
+          "image": "123456789101.dkr.ecr.us-east-1.amazonaws.com/ecs-amp-xray-collector:latest",
           "essential": true,
           "environment": [
               {
@@ -74,7 +74,7 @@ After adding the sidecar, the container definition should look as following:
               "logDriver": "awslogs",
               "options": {
                   "awslogs-create-group": "True",
-                  "awslogs-group": "/ecs/ecs-otel-amp-xray-collector",
+                  "awslogs-group": "/ecs/ecs-amp-xray-collector",
                   "awslogs-region": "eu-west-1",
                   "awslogs-stream-prefix": "ecs"
               }
